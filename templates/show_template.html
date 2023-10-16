@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Content</title>
+</head>
+<body>
+    <h1>File Content</h1>
+    <pre style="width:400px; height:700px; overflow: visible;">{{ content }}</pre>
+    <form method="POST" action="{{ url_for('process') }}">
+        <input type="hidden" name="content" value="{{ content }}">
+        <button type="submit">Process</button>
+    </form>
+</body>
+</html>
