@@ -1,0 +1,48 @@
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 600px;
+  margin: 50px auto;
+  background-color: rgb(220, 246, 213);
+}
+
+h1 {
+  color: #5e9ca0;
+}
+
+h2 {
+  text-align: center;
+  color: #2e6c80;
+}
+
+h3 {
+  text-align: center;
+  width: 250px;
+}
+
+form {
+  display: flex;
+  justify-content: space-between;
+}
+textarea {
+  width: 450px;
+  height: 400px;
+  resize: none;
+}
+div#loading{
+  display: none;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  background: rgb(220, 246, 213);
+  opacity: 0.7;
+}
+div#loading span{
+    top: 36%;
+    position: absolute;
+    left: 38%;
+    font-size: 400%;
+}

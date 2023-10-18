@@ -1,3 +1,4 @@
+import json
 import openai
 import sys
 
@@ -20,13 +21,32 @@ def test_prompt_with_chat_gpt():
 
 
 def get_feedback_temperament_and_category(feedback):
-    return prompt_with_chat_gpt(feedback,
+    chatResult = prompt_with_chat_gpt(feedback,
                                 "Analyze the following feedback text and determine both the "
                                 "temperament (positive, neutral, or negative) and the category "
                                 "(e.g., customer service, product quality, user experience), "
-                                "and return json as result like this:")
+                                "and return json as a result")
+    if is_satisfying(chatResult):
+        return chatResult
+    else:
+        return  {
+            "temperament": "error",
+            "category": "error",
+            "actualResult": chatResult,
+        }
 
-
+def is_satisfying(chatResult):
+    try:
+        message_json = json.loads(chatResult)
+        if "temperament" in message_json and "category" in message_json:
+            return True
+        else:
+            print("The JSON object structure is not as expected.")
+            return False
+    except json.JSONDecodeError:
+        print("The message_content is not a valid JSON object.")
+        return False
+    
 def prompt_with_chat_gpt(prompt, sysMessage):
     completion = openai.ChatCompletion.create(
         deployment_id="gpt-4",

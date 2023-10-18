@@ -1,48 +1,36 @@
-class DrawChart {
-    constructor(canvasId, mappedData) {
-        const canvas = document.getElementById(canvasId);
-        canvas.onclick = this.#canvasClicked;
-        this.myChart = new Chart(canvas, this.#getOptions(this.#buildData(mappedData)));
-        this.mappedData = mappedData;
-    }
-    update(newMappedData) {
-        this.mappedData = newMappedData;
-        this.myChart.data = newMappedData;
-        this.myChart.update();
-    }
-    #getOptions(data) {
-        return {
-            type: 'bar',
-            data: data,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                events: ['click']
-            }
-        }
-    }
-    #buildData(mappedData) {
-        return {
-            labels: Object.keys(mappedData),
-            datasets: [{
-                label: 'count by ' + prop,
-                data: Object.keys(mappedData).map((key) => mappedData[key].count),
-                backgroundColor: Object.keys(mappedData).map((key) => `rgba(${mappedData[key].color}, 0.3)`),
-                borderColor: Object.keys(mappedData).map((key) => `rgb(${mappedData[key].color})`),
-                borderWidth: 1
-            }]
-        }
-    }
-    #canvasClicked(evt) {
-        const activePoints = this.myChart.getElementsAtEventForMode(evt, 'nearest', { intersect: true }, true);
+const chartData = {};
 
-        if (activePoints.length > 0) {
-            const dataIndex = activePoints[0].index;
-            const clickedLabel = this.myChart.data.labels[dataIndex];
-            console.log(this.mappedData[clickedLabel]);
+function getRandomNumber() {
+    return Math.floor(Math.random() * 256);
+}
+
+function prepareChartData(jsonData, toggle) {
+    const prop = toggle.checked ? "temperament" : "category";
+
+    if (chartData[prop]) return chartData[prop];
+
+    chartData[prop] = {};
+
+    jsonData.forEach(element => {
+        const key = element[prop];
+        if (!chartData[prop][key]) {
+            chartData[prop][key] = {
+                count: 0,
+                elements: [],
+                color: `${getRandomNumber()}, ${getRandomNumber()}, ${getRandomNumber()}`
+            };
         }
-    }
+        chartData[prop][key].count++;
+        chartData[prop][key].elements.push(element);
+    });
+
+    return chartData[prop];
+}
+
+function init(jsonData, chartElementId, checkboxId) {
+    const toggle = document.getElementById(checkboxId),
+        data = JSON.parse(jsonData),
+        chart = new DrawChart(chartElementId, prepareChartData(data, toggle));
+
+    toggle.onclick = () => chart.update(prepareChartData(data, toggle));
 }

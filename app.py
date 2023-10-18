@@ -11,30 +11,31 @@ app.config["ALLOWED_EXTENSIONS"] = ["xml"]
 app.config["UPLOAD_FOLDER"] = os.path.join("static", "uploads")
 
 
-def allowed_file(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in app.config["ALLOWED_EXTENSIONS"]
-
-
 @app.route("/")
 def home():
     return render_template("home.html")
 
 
-@app.route("/upload", methods=["POST"])
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in app.config["ALLOWED_EXTENSIONS"]
+
+
+@app.route("/preview", methods=["POST"])
 def upload_file():
     if "file" not in request.files:
-        return redirect(request.url)
+        return redirect("/")
 
     file = request.files["file"]
+
     if file.filename == "":
-        redirect(request.url)
+        redirect("/")
 
     if file and allowed_file(file.filename):
         file_content = file.read()
         xml_string = file_content.decode('utf-8')
         xml_string = xml_string.replace('\\r\\n', '\n').replace("\\'", "'")
 
-        return render_template('show_template.html', content=xml_string)
+        return render_template('preview.html', content=xml_string)
     else:
         return "Error"
 
@@ -43,6 +44,7 @@ def upload_file():
 def process():
     content = request.form.get('content')
     feedbacks = xml_to_object(content)
+    print(content, feedbacks)
 
     for feedback in feedbacks:
         comment = feedback["comment"]
@@ -51,18 +53,12 @@ def process():
         feedback.update(additional_properties)
         store_customer_feedback(feedback)
 
-    # stringify the json in order to be visible in the html by default
-    # result = json.dumps(feedbacks).replace('\\r\\n', '\n').replace("\\'", "'")
-
-    return draw(feedback)
+    return redirect("draw")
 
 
-@app.route("/render_chart", methods=["GET"])
+@app.route("/draw", methods=["GET"])
 def render_chart():
-    return draw(retrieve_customer_feedbacks())
-
-
-def draw(feedback):
+    feedback = retrieve_customer_feedbacks()
     return render_template('draw.html', context=json.loads(json.dumps(feedback, default=str)))
 
 
