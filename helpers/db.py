@@ -1,11 +1,11 @@
 from pymongo import MongoClient
 import sys
 
-if len(sys.argv) < 3:
+if len(sys.argv) < 4:
     raise Exception(
         "Please provide the needed arguments. Readme.txt for more info")
-password = sys.argv[2]
-if len(password) != 6:
+address = sys.argv[3]
+if len(address) != 6:
     raise Exception("db pass should be with 6 chars")
 
 # Constants
@@ -13,8 +13,7 @@ DB_NAME = "yourDatabaseName"
 COLLECTION_NAME = "customerFeedback"
 
 # Connect to MongoDB
-client = MongoClient(
-    f"mongodb+srv://geodanchev:{password}@goshtest.9fabnmm.mongodb.net/?retryWrites=true&w=majority&tlsCAFile=.\certificate\isrgrootx1.pem")
+client = MongoClient(address)
 db = client[DB_NAME]
 feedback_collection = db[COLLECTION_NAME]
 

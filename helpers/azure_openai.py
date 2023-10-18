@@ -2,15 +2,17 @@ import json
 import openai
 import sys
 
-if len(sys.argv) < 3:
+
+if len(sys.argv) < 4:
     raise Exception(
         "Please provide the needed arguments. Readme.txt for more info")
-key = sys.argv[1]
+endpoint = sys.argv[1]
+key = sys.argv[2]
 if len(key) != 32:
     raise Exception(f"key should be with 32 chars but it is {len(key)}")
 
 openai.api_key = key
-openai.api_base = "https://copstesting.openai.azure.com"
+openai.api_base = endpoint
 openai.api_type = "azure"
 openai.api_version = "2023-05-15"
 
