@@ -5,8 +5,6 @@ if len(sys.argv) < 4:
     raise Exception(
         "Please provide the needed arguments. Readme.txt for more info")
 address = sys.argv[3]
-if len(address) != 6:
-    raise Exception("db pass should be with 6 chars")
 
 # Constants
 DB_NAME = "yourDatabaseName"
