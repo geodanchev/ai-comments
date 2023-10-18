@@ -1,3 +1,7 @@
+Prerequisits 
+    1. create a mongodb database in cloud.mongodb.com and follow the instructions there
+    2. modify the code changing the connection string in helpers/db.py
+
 how to run the application
 
 1. install python 3
