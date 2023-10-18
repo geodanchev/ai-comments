@@ -14,11 +14,9 @@ openai.api_base = "https://copstesting.openai.azure.com"
 openai.api_type = "azure"
 openai.api_version = "2023-05-15"
 
-
 def test_prompt_with_chat_gpt():
     return get_feedback_temperament_and_category("The customer support was incredibly helpful, but the "
                                                  "product stopped working after just two weeks.")
-
 
 def get_feedback_temperament_and_category(feedback):
     chatResult = prompt_with_chat_gpt(feedback,

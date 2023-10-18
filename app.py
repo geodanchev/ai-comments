@@ -19,7 +19,6 @@ def home():
 def allowed_file(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in app.config["ALLOWED_EXTENSIONS"]
 
-
 @app.route("/preview", methods=["POST"])
 def upload_file():
     if "file" not in request.files:
