@@ -1,17 +1,12 @@
 from pymongo import MongoClient
-import sys
-
-if len(sys.argv) < 4:
-    raise Exception(
-        "Please provide the needed arguments. Readme.txt for more info")
-address = sys.argv[3]
+from helpers.config_helper import getMongoAddress, getMongoDBName
 
 # Constants
-DB_NAME = "yourDatabaseName"
+DB_NAME = getMongoDBName()
 COLLECTION_NAME = "customerFeedback"
 
 # Connect to MongoDB
-client = MongoClient(address)
+client = MongoClient(getMongoAddress())
 db = client[DB_NAME]
 feedback_collection = db[COLLECTION_NAME]
 
