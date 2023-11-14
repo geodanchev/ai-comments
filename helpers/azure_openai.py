@@ -1,11 +1,10 @@
 import json
-import openai
+from openai import AzureOpenAI
 from helpers.config_helper import getOpenAIEndpoint, getOpenAIKey
 
-openai.api_key = getOpenAIKey()
-openai.api_base = getOpenAIEndpoint()
-openai.api_type = "azure"
-openai.api_version = "2023-05-15"
+client = AzureOpenAI(azure_endpoint=getOpenAIEndpoint(),
+                     api_key=getOpenAIKey(),
+                     api_version="2023-05-15")
 
 def test_prompt_with_chat_gpt():
     return get_feedback_temperament_and_category("The customer support was incredibly helpful, but the "
@@ -39,11 +38,9 @@ def is_satisfying(chatResult):
         return False
     
 def prompt_with_chat_gpt(prompt, sysMessage):
-    completion = openai.ChatCompletion.create(
-        deployment_id="gpt-4",
+    completion = client.chat.completions.create(
         model="gpt-4",
-        temperature=0.1,
-        max_tokens=30,
+        temperature=0.7,
         messages=[
             {"role": "system", "content": sysMessage},
             {"role": "user", "content": prompt}
@@ -51,3 +48,7 @@ def prompt_with_chat_gpt(prompt, sysMessage):
     )
 
     return completion.choices[0].message.content
+
+def summarize_transcript(transcript):
+    return prompt_with_chat_gpt(transcript,
+                                "Analyze the following transcription and return short summarization as bullet points")
