@@ -15,10 +15,10 @@ def read_vtt_file(file):
     return captions
 
 
-def read_vtt_file_from_request_content(decodedContent, extension):
+def read_vtt_file_from_request_content(binaryContent, extension):
     result = []
-    with NamedTemporaryFile('w', suffix=f'.{extension}', delete=False) as temp_file:
-        temp_file.write(decodedContent)
+    with NamedTemporaryFile('wb', suffix=f'.{extension}', delete=False) as temp_file:
+        temp_file.write(binaryContent)
         temp_file.close()
         result = read_vtt_file(temp_file.name)
     return result

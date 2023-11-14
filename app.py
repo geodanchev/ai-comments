@@ -37,18 +37,16 @@ def upload_file():
     if file:
         fex = get_file_extension(file.filename)
         if fex and fex in app.config["ALLOWED_EXTENSIONS"]:
-            file_content = file.read().decode(
-                'utf-8').replace('\\r\\n', '\n').replace("\\'", "'")
             match fex:
                 case "xml":
                     content = {
-                        'text':file_content,
+                        'text': file.read().decode('utf-8').replace('\\r\\n', '\n').replace("\\'", "'"),
                         'operation':'process'
                     }
                     return render_template('preview.html', content=content)
                 case "vtt" | "str" | "sbv":
                     content = {
-                        'text':read_vtt_file_from_request_content(file_content, fex),
+                        'text':read_vtt_file_from_request_content(file.read(), fex),
                         'operation':'process2'
                     }
                     return render_template('preview.html', content=content)
