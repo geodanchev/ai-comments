@@ -2,7 +2,7 @@
 import json
 import os
 from helpers.xml_processing import xml_to_object
-from helpers.azure_openai import get_feedback_temperament_and_category, summarize_transcript
+from helpers.azure_openai import summarize_transcript
 from helpers.db import store_customer_feedback, retrieve_customer_feedbacks
 from helpers.webvtt_processing import read_vtt_file_from_request_content
 from flask import Flask, render_template, request, redirect, url_for

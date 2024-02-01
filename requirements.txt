@@ -2,3 +2,4 @@ Flask
 openai
 pymongo
 webvtt-py
+tiktoken
